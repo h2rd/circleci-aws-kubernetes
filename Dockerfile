@@ -2,8 +2,8 @@ FROM alpine:3.8
 
 ENV CLOUDSDK_CORE_DISABLE_PROMPTS true
 ENV PATH /google-cloud-sdk/bin:$PATH
-ENV GCLOUD_SDK_VERSION="228.0.0"
-ENV KUBERNETES_VERSION="v1.8.4"
+ENV GCLOUD_SDK_VERSION="319.0.0"
+ENV KUBERNETES_VERSION="v1.15.11"
 
 # install packages
 RUN apk --no-cache update \

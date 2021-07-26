@@ -2,8 +2,8 @@ FROM alpine:3.8
 
 ENV CLOUDSDK_CORE_DISABLE_PROMPTS true
 ENV PATH /google-cloud-sdk/bin:$PATH
-ENV GCLOUD_SDK_VERSION="319.0.0"
-ENV KUBERNETES_VERSION="v1.15.11"
+ENV GCLOUD_SDK_VERSION="349.0.0"
+ENV KUBERNETES_VERSION="v1.21.3"
 
 # install packages
 RUN apk --no-cache update \
@@ -30,7 +30,6 @@ RUN apk --no-cache update \
                 openssl \
                 groff \
                 less \
-        && pip --no-cache-dir install awscli \
         && ln -s /usr/bin/php5 /usr/bin/php \
         && rm -rf /var/cache/apk/*
 

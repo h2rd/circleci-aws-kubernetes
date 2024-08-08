@@ -1,9 +1,9 @@
-FROM alpine:3.8
+FROM php:7.4-alpine
 
-ENV CLOUDSDK_CORE_DISABLE_PROMPTS true
-ENV PATH /google-cloud-sdk/bin:$PATH
-ENV GCLOUD_SDK_VERSION="349.0.0"
-ENV KUBERNETES_VERSION="v1.21.3"
+ENV CLOUDSDK_CORE_DISABLE_PROMPTS=true
+ENV PATH=/google-cloud-sdk/bin:$PATH
+ARG GCLOUD_SDK_VERSION="486.0.0"
+ARG KUBERNETES_VERSION="v1.29.2"
 
 # install packages
 RUN apk --no-cache update \
@@ -14,27 +14,16 @@ RUN apk --no-cache update \
                 tar \
                 gzip \
                 ca-certificates \
-                php5 \
-                php5-json \
-                php5-phar \
-                php5-openssl \
-                php5-zlib \
-                php5-mcrypt \
-                php5-bcmath \
-                php5-curl \
-                php5-sockets \
-                py-pip \
-                nodejs \
-                nodejs-npm \
+                python3 \
+                py3-pip \
                 curl \
                 openssl \
                 groff \
                 less \
-        && ln -s /usr/bin/php5 /usr/bin/php \
         && rm -rf /var/cache/apk/*
 
 # install composer
-RUN curl -sS https://getcomposer.org/installer | php5 -- --install-dir=/usr/bin --filename=composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
 # install kubectl
 RUN curl -o /usr/local/bin/kubectl "https://storage.googleapis.com/kubernetes-release/release/${KUBERNETES_VERSION}/bin/linux/amd64/kubectl" \
@@ -43,4 +32,5 @@ RUN curl -o /usr/local/bin/kubectl "https://storage.googleapis.com/kubernetes-re
 # install gcloud
 RUN curl "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-${GCLOUD_SDK_VERSION}-linux-x86_64.tar.gz" | tar xz \
         && gcloud config set core/disable_usage_reporting true \
-        && gcloud config set component_manager/disable_update_check true
+        && gcloud config set component_manager/disable_update_check true \
+        && gcloud components install gke-gcloud-auth-plugin
